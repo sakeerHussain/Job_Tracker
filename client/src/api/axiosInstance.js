@@ -8,7 +8,6 @@ const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Only redirect if 401 happens outside of the auth check itself
     const isAuthCheck = error.config.url.includes("/auth/me");
     if (error.response?.status === 401 && !isAuthCheck) {
       window.location.href = "/login";
