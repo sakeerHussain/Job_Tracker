@@ -6,8 +6,8 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
-import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
-import protect from "./middlewares/authMIddleware.js";
+import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
+
 
 dotenv.config();
 dotenv.config();
