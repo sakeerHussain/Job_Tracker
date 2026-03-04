@@ -8,7 +8,7 @@ const Register = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setUser } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,7 +24,7 @@ const Register = () => {
     setLoading(true);
     try {
       const { data } = await registerUser(form);
-      setUser(data.data);
+      login(data.token, data.data); // Use login from context
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed. Try again.");

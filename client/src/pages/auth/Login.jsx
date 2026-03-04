@@ -8,7 +8,7 @@ const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setUser } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,7 +21,7 @@ const Login = () => {
     setLoading(true);
     try {
       const { data } = await loginUser(form);
-      setUser(data.data);
+      login(data.token, data.data); // Use login from context
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Try again.");

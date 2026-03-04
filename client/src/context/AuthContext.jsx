@@ -9,30 +9,43 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
+      // Check if token exists in memory
+      const token = window.__authToken__;
+      if (!token) {
+        setLoading(false);
+        return;
+      }
       try {
         const { data } = await getMe();
         setUser(data.data);
       } catch {
-        setUser(null); // Expected when not logged in — not an error
+        window.__authToken__ = null;
+        setUser(null);
       } finally {
-        setLoading(false); // Always stop loading regardless of result
+        setLoading(false);
       }
     };
     checkAuth();
-  }, []); // Empty array — runs once only
+  }, []);
+
+  const login = (token, userData) => {
+    window.__authToken__ = token; // Store token in memory
+    setUser(userData);
+  };
 
   const logout = async () => {
     try {
       await logoutUser();
     } catch {
-      // Ignore logout errors
+      // ignore
     } finally {
+      window.__authToken__ = null;
       setUser(null);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,9 +1,18 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
+/**
+ * Reads JWT from Authorization header instead of cookie
+ * Frontend sends: Authorization: Bearer <token>
+ */
 const protect = async (req, res, next) => {
   try {
-    const token = req.cookies.jwt;
+    let token;
+
+    // Check Authorization header
+    if (req.headers.authorization?.startsWith("Bearer ")) {
+      token = req.headers.authorization.split(" ")[1];
+    }
 
     if (!token) {
       return res.status(401).json({
